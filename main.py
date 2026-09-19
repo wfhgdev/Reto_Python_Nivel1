@@ -1,58 +1,3 @@
-# Construir un programa en Python que funcione por consola y permita gestionar un catálogo básico de piezas coleccionables.
-
-# El programa debe permitir registrar piezas, consultar la información del catálogo, aplicar filtros, calcular métricas y validar los datos ingresados por el usuario.
-
-# # Reglas de negocio
-# ## Estructura de datos de una pieza
-# Cada pieza debe contener los siguientes datos:
-
-# | Campo | Tipo de dato esperado | Descripción |
-# |---|---|---|
-# | `id` | Texto | Identificador único de la pieza |
-# | `name` | Texto | Nombre de la pieza |
-# | `category` | Texto | Categoría a la que pertenece |
-# | `price` | Número decimal | Precio de venta o valor de referencia |
-# | `status` | Texto | Estado actual de la pieza |
-# | `description` | Texto | Descripción detallada de la pieza |
-
-# Las piezas deben almacenarse dentro de una colección principal llamada `catalog`.
-# La información de cada pieza debe organizarse utilizando una estructura de datos que permita asociar cada campo con su valor correspondiente.
-
-# ## Estados permitidos
-# Cada pieza solo puede tener uno de los siguientes estados:
-# - `disponible` --->  la pieza puede venderse o intercambiarse.
-# - `reservada` ---> la pieza está apartada temporalmente para un comprador.
-# - `vendida` ---> la pieza ya fue vendida y no está disponible.
-
-# ## La descripción
-# La descripción de una pieza debe explicar brevemente las características de la pieza.
-# Además, debe incluir obligatoriamente una de las siguientes palabras:
-# - `usada`
-# - `certificada`
-
-# ### Ejemplos de descripciones válidas
-# - Figura usada con algunos detalles de conservación.
-# - Pieza certificada en caja original.
-# - Carta usada en buen estado.
-# - Moneda certificada por un experto.
-# ### Ejemplo de descripción no válida
-# - Figura roja de colección.
-# La descripción anterior no contiene las palabras `usada` ni `certificada`.
-
-# ---
-# # NIVEL I – Registro de piezas y estructuras base
-
-# ## Parte 1. Preparación del proyecto
-
-# 1. Crear un repositorio en GitHub para el reto.
-# 2. Clonar el repositorio en el equipo local.
-# 3. Crear el archivo principal del programa.
-# 4. Crear el archivo `README.md`.
-# 5. Definir el nombre del sistema.
-# 6. Mostrar un mensaje de bienvenida al iniciar el programa.
-
-# El mensaje debe indicar que el usuario está ingresando al catálogo de piezas coleccionables.
-
 ## Parte 2. Captura de piezas por terminal
 
 # El programa debe solicitar por terminal la información de **10 piezas coleccionables**.
@@ -64,8 +9,26 @@
 # * Estado.
 # * Descripción.
 
+## Parte 3. Almacenamiento de la información
+
+# Al finalizar la captura:
+
+# - el catálogo deberá contener como mínimo 10 piezas.
+# - Cada pieza debe conservar todos sus datos.
+# - El catálogo debe permitir recorrer y consultar las piezas individualmente.
+# - Los datos deben estar organizados de forma que sea posible acceder al identificador, nombre, categoría, precio, estado y descripción de cada pieza.
+
+## Parte 4. Información adicional del catálogo
+
+# Crear también un set con las categorías utilizadas en las piezas registradas.
+
+# El set debe:
+# - Contener únicamente categorías.
+# - Eliminar automáticamente las categorías repetidas.
+# - Permitir conocer cuántas categorías diferentes existen.
+
 SYSTEM_NAME = "La Tienda de William"
-PIECES_TO_REGISTER = 2
+PIECES_TO_REGISTER = 1 #input("Digite cantidad de piezas a ingresar: ")
 STATUS_AVAILABLE = "disponible"
 STATUS_RESERVED = "reservada"
 STATUS_SOLD = "vendida"
@@ -75,6 +38,91 @@ def show_welcome():
     print("Bienvenido a " + SYSTEM_NAME)
     print("Ha ingresado al catálogo de piezas coleccionables.")
 
+
+# punto 1. 1 Pedir datos
+
+def capture_catalog(pieces_amount):
+    catalog = []
+    position = 1
+    while position <= pieces_amount:
+        print("\nPieza " + str(position) + " de " + str(pieces_amount))
+        piece = ask_for_piece(catalog)
+        catalog.append(piece)
+        position += 1
+    return catalog
+
+def ask_for_piece(catalog):
+    piece = {
+        "id": ask_id("  Identificador: ", catalog),
+        "name": ask_text("  Nombre: ", "El nombre"),
+        "category": ask_text("  Categoría: ", "La categoría"),
+        "price": ask_price("  Precio: "),
+        "status": ask_status("  Estado (disponible/reservada/vendida): "),
+        "description": ask_description("  Descripción ('usada' o 'certificada'): "),
+    }
+    return piece
+
+def ask_id(prompt, catalog):
+    while True:
+        piece_id = ask_text(prompt, "El identificador")
+        if id_exists(catalog, piece_id):
+            print("  Error: ya existe una pieza con ese identificador.")
+        else:
+            return piece_id
+
+def ask_text(prompt, field_label):
+    while True:
+        text = input(prompt).strip()
+        if text == "":
+            print("  Error: " + field_label + " no puede estar vacío.")
+        else:
+            return text
+
+def id_exists(catalog, piece_id):
+    for piece in catalog:
+        if piece["id"] == piece_id:
+            return True
+    return False
+
+def ask_price(prompt):
+    while True:
+        price = ask_number(prompt)
+        if price > 0:
+            return price
+        print("  Error: el precio debe ser mayor que cero.")
+
+def ask_number(prompt):
+    while True:
+        text = input(prompt)
+        if is_number(text):
+            return float(text.strip().replace(",", "."))
+        print("  Error: debes introducir un valor numérico.")
+
+def is_number(text):
+    text = text.strip().replace(",", ".")
+    if text.startswith("-"):
+        text = text[1:]
+    if text.count(".") > 1:
+        return False
+    return text.replace(".", "").isdecimal()
+
+def ask_status(prompt):
+    while True:
+        status = input(prompt).strip().lower()
+        if status in ALLOWED_STATUS:
+            return status
+        print("  Error: el estado debe ser: disponible, reservada o vendida.")
+
+def ask_description(prompt):
+    while True:
+        description = ask_text(prompt, "La descripción")
+        text = description.lower()
+        if "usada" in text or "certificada" in text:
+            return description
+        print("  Error: la descripción debe contener 'usada' o 'certificada'.")
+
+
 def main():
     show_welcome()
+    catalog = capture_catalog(PIECES_TO_REGISTER)
 main()
