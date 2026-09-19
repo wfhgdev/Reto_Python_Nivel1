@@ -1,5 +1,3 @@
-# # Objetivo general
-
 # Construir un programa en Python que funcione por consola y permita gestionar un catálogo básico de piezas coleccionables.
 
 # El programa debe permitir registrar piezas, consultar la información del catálogo, aplicar filtros, calcular métricas y validar los datos ingresados por el usuario.
@@ -52,4 +50,17 @@
 # 4. Crear el archivo `README.md`.
 # 5. Definir el nombre del sistema.
 # 6. Mostrar un mensaje de bienvenida al iniciar el programa.
+
+# El mensaje debe indicar que el usuario está ingresando al catálogo de piezas coleccionables.
+
+## Parte 2. Captura de piezas por terminal
+
+# El programa debe solicitar por terminal la información de **10 piezas coleccionables**.
+# Cada pieza debe solicitar los siguientes datos:
+# * Identificador.
+# * Nombre.
+# * Categoría.
+# * Precio.
+# * Estado.
+# * Descripción.
 
