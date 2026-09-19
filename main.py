@@ -64,3 +64,17 @@
 # * Estado.
 # * Descripción.
 
+SYSTEM_NAME = "La Tienda de William"
+PIECES_TO_REGISTER = 2
+STATUS_AVAILABLE = "disponible"
+STATUS_RESERVED = "reservada"
+STATUS_SOLD = "vendida"
+ALLOWED_STATUS = [STATUS_AVAILABLE, STATUS_RESERVED, STATUS_SOLD]
+
+def show_welcome():
+    print("Bienvenido a " + SYSTEM_NAME)
+    print("Ha ingresado al catálogo de piezas coleccionables.")
+
+def main():
+    show_welcome()
+main()
