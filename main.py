@@ -137,6 +137,16 @@ def show_pieces(pieces):
 def show_piece(piece):
     print("[" + piece["id"] + "] " + piece["name"] + " | " + piece["category"] + " | " + f"{piece['price']:.2f}" + " | " + piece["status"] + " | " + "Descripción: " + piece["description"])
 
+def show_data_types(catalog, categories):
+    print_section_title("Tipos de datos")
+    piece = catalog[0]
+    print("catalog:", type(catalog))
+    print("piece:", type(piece))
+    print("categories:", type(categories))
+    print("id:", type(piece["id"]))
+    print("name:", type(piece["name"]))
+    print("price:", type(piece["price"]))
+    print("status:", type(piece["status"]))
 
 #-------------------
 def main():
@@ -144,4 +154,5 @@ def main():
     catalog = capture_catalog(PIECES_TO_REGISTER)
     categories = get_categories(catalog)
     show_catalog_overview(catalog, categories)
+    show_data_types(catalog, categories)
 main()
