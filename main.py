@@ -205,7 +205,34 @@ def can_be_published(piece):
 def requires_review(piece):
     return piece["status"] == STATUS_RESERVED or piece["status"] == STATUS_SOLD
 
+#cambios de strings----------
+
+def run_string_exercises(catalog):
+    print_section_title("Manipulación de strings")
+    piece = catalog[0]
+
+    concatenated = ("Pieza " + piece["id"] + ": " + piece["name"] + piece["category"] + " - " + str(piece["price"]) + " - " + piece["status"])
+    print("Concatenación: " + concatenated)
+
+    interpolated = (f"Pieza {piece['id']}: {piece['name']} ({piece['category']} - {piece['price']} - {piece['status']}")
+    print("Interpolación: " + interpolated)
+
+    tags_text = ask_text("\nEtiquetas separadas por comas (ej: retro,anime,limited): ", "Las etiquetas")
+    tags = tags_text.split(",")
+    print("Etiquetas separadas:", tags)
+
+    print("\nDescripción original: " + piece["description"])
+    print("Descripción con reemplazo: " + piece["description"].replace("usada", "certificada"))
+
+    username = input("\nNombre de usuario: ")
+    print("Sin espacios al inicio y al final: '" + username.strip() + "'")
+    print("Minúsculas: " + username.lower())
+    print("Mayúsculas: " + username.upper())
+    print("Formato título: " + username.title())
+    print("\nNombre de la pieza normalizada: " + piece["name"].strip().title())
+
 #-------------------
+
 def main():
     show_welcome()
     catalog = capture_catalog(PIECES_TO_REGISTER)
@@ -215,4 +242,5 @@ def main():
     run_status_filters(catalog)
     run_price_filter(catalog)
     run_logical_rules(catalog)
+    run_string_exercises(catalog)
 main()
