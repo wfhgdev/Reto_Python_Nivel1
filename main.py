@@ -122,14 +122,14 @@ def get_categories(catalog):
 
 def show_catalog_overview(catalog, categories):
     print_section_title("Catálogo completo")
-    show_pieces(catalog)
+    show_pieces(catalog, "El catálogo está vacío.")
     print("\nCantidad total de piezas: " + str(len(catalog)))
     print("Categorías únicas: " + str(categories))
     print("Cantidad de categorías: " + str(len(categories)))
 
-def show_pieces(pieces):
+def show_pieces(pieces, empty_message):
     if len(pieces) == 0:
-        print("El catálogo está vacío.")
+        print(empty_message)
     else:
         for piece in pieces:
             show_piece(piece)
@@ -164,6 +164,20 @@ def filter_by_status(catalog, status):
             result.append(piece)
     return result
 
+def run_price_filter(catalog):
+    print_section_title("Filtro por precio")
+    minimum_price = ask_number("Precio mínimo: ")
+    pieces = filter_by_minimum_price(catalog, minimum_price)
+    show_pieces(pieces, "No se encontraron piezas con precio superior al indicado.")
+
+def filter_by_minimum_price(catalog, minimum_price):
+    result = []
+    for piece in catalog:
+        if piece["price"] > minimum_price:
+            result.append(piece)
+    return result
+
+
 
 #-------------------
 def main():
@@ -173,4 +187,5 @@ def main():
     show_catalog_overview(catalog, categories)
     show_data_types(catalog, categories)
     run_status_filters(catalog)
+    run_price_filter(catalog)
 main()
