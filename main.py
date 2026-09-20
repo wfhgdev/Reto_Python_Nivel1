@@ -148,6 +148,23 @@ def show_data_types(catalog, categories):
     print("price:", type(piece["price"]))
     print("status:", type(piece["status"]))
 
+#filtros
+
+def run_status_filters(catalog):
+    print_section_title("Filtro por estado")
+    for status in ALLOWED_STATUS:
+        print("\nPiezas en estado '" + status + "':")
+        pieces = filter_by_status(catalog, status)
+        show_pieces(pieces, "No hay piezas en estado '" + status + "'.")
+
+def filter_by_status(catalog, status):
+    result = []
+    for piece in catalog:
+        if piece["status"] == status:
+            result.append(piece)
+    return result
+
+
 #-------------------
 def main():
     show_welcome()
@@ -155,4 +172,5 @@ def main():
     categories = get_categories(catalog)
     show_catalog_overview(catalog, categories)
     show_data_types(catalog, categories)
+    run_status_filters(catalog)
 main()
