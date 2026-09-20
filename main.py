@@ -27,8 +27,10 @@ def show_welcome():
     print("Bienvenido a " + SYSTEM_NAME)
     print("Ha ingresado al catálogo de piezas coleccionables.")
 
+def print_section_title(title):
+    print("\n========== " + title + " ==========")
 
-# 2. Pedir datos
+# pedir datos
 
 def capture_catalog(pieces_amount):
     catalog = []
@@ -55,7 +57,7 @@ def ask_id(prompt, catalog):
     while True:
         piece_id = ask_text(prompt, "El identificador")
         if id_exists(catalog, piece_id):
-            print("  Error: ya existe una pieza con ese identificador.")
+            print("Error: ya existe una pieza con ese identificador.")
         else:
             return piece_id
 
@@ -63,7 +65,7 @@ def ask_text(prompt, field_label):
     while True:
         text = input(prompt).strip()
         if text == "":
-            print("  Error: " + field_label + " no puede estar vacío.")
+            print("Error: " + field_label + " no puede estar vacío.")
         else:
             return text
 
@@ -78,14 +80,14 @@ def ask_price(prompt):
         price = ask_number(prompt)
         if price > 0:
             return price
-        print("  Error: el precio debe ser mayor que cero.")
+        print("Error: el precio debe ser mayor que cero.")
 
 def ask_number(prompt):
     while True:
         text = input(prompt)
         if is_number(text):
             return float(text.strip().replace(",", "."))
-        print("  Error: debes introducir un valor numérico.")
+        print("Error: debes introducir un valor numérico.")
 
 def is_number(text):
     text = text.strip().replace(",", ".")
@@ -100,7 +102,7 @@ def ask_status(prompt):
         status = input(prompt).strip().lower()
         if status in ALLOWED_STATUS:
             return status
-        print("  Error: el estado debe ser: disponible, reservada o vendida.")
+        print("Error: el estado debe ser: disponible, reservada o vendida.")
 
 def ask_description(prompt):
     while True:
@@ -108,7 +110,7 @@ def ask_description(prompt):
         text = description.lower()
         if "usada" in text or "certificada" in text:
             return description
-        print("  Error: la descripción debe contener 'usada' o 'certificada'.")
+        print("Error: la descripción debe contener 'usada' o 'certificada'.")
 
 def get_categories(catalog):
     categories = set()
@@ -116,10 +118,30 @@ def get_categories(catalog):
         categories.add(piece["category"])
     return categories
 
+# mostrar
+
+def show_catalog_overview(catalog, categories):
+    print_section_title("Catálogo completo")
+    show_pieces(catalog)
+    print("\nCantidad total de piezas: " + str(len(catalog)))
+    print("Categorías únicas: " + str(categories))
+    print("Cantidad de categorías: " + str(len(categories)))
+
+def show_pieces(pieces):
+    if len(pieces) == 0:
+        print("El catálogo está vacío.")
+    else:
+        for piece in pieces:
+            show_piece(piece)
+
+def show_piece(piece):
+    print("[" + piece["id"] + "] " + piece["name"] + " | " + piece["category"] + " | " + f"{piece['price']:.2f}" + " | " + piece["status"] + " | " + "Descripción: " + piece["description"])
+
 
 #-------------------
 def main():
     show_welcome()
     catalog = capture_catalog(PIECES_TO_REGISTER)
     categories = get_categories(catalog)
+    show_catalog_overview(catalog, categories)
 main()
