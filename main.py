@@ -1,23 +1,5 @@
-## Parte 3. Almacenamiento de la información
-
-# Al finalizar la captura:
-
-# - el catálogo deberá contener como mínimo 10 piezas.
-# - Cada pieza debe conservar todos sus datos.
-# - El catálogo debe permitir recorrer y consultar las piezas individualmente.
-# - Los datos deben estar organizados de forma que sea posible acceder al identificador, nombre, categoría, precio, estado y descripción de cada pieza.
-
-## Parte 4. Información adicional del catálogo
-
-# Crear también un set con las categorías utilizadas en las piezas registradas.
-
-# El set debe:
-# - Contener únicamente categorías.
-# - Eliminar automáticamente las categorías repetidas.
-# - Permitir conocer cuántas categorías diferentes existen.
-
 SYSTEM_NAME = "La Tienda de William"
-PIECES_TO_REGISTER = 1 #input("Digite cantidad de piezas a ingresar: ")
+PIECES_TO_REGISTER = 1
 STATUS_AVAILABLE = "disponible"
 STATUS_RESERVED = "reservada"
 STATUS_SOLD = "vendida"
@@ -178,7 +160,6 @@ def filter_by_minimum_price(catalog, minimum_price):
     return result
 
 def filter_not_sold(catalog):
-    # Piezas cuyo estado es DISTINTO (!=) de "vendida".
     result = []
     for piece in catalog:
         if piece["status"] != STATUS_SOLD:
@@ -205,7 +186,7 @@ def can_be_published(piece):
 def requires_review(piece):
     return piece["status"] == STATUS_RESERVED or piece["status"] == STATUS_SOLD
 
-#cambios de strings----------
+#cambios de strings
 
 def run_string_exercises(catalog):
     print_section_title("Manipulación de strings")
@@ -231,6 +212,37 @@ def run_string_exercises(catalog):
     print("Formato título: " + username.title())
     print("\nNombre de la pieza normalizada: " + piece["name"].strip().title())
 
+# metricas
+
+def calculate_total_price(catalog):
+    total = 0
+    for piece in catalog:
+        total += piece["price"]
+    return total
+
+def calculate_average_price(catalog):
+    if len(catalog) == 0:
+        return 0
+    return calculate_total_price(catalog) / len(catalog)
+
+def show_numbered_pieces(catalog):
+    print("\nPiezas enumeradas:")
+    position = 1
+    for piece in catalog:
+        print(str(position) + ". " + piece["name"])
+        position += 1
+
+def show_metrics(catalog):
+    print_section_title("Métricas del catálogo")
+    for status in ALLOWED_STATUS:
+        amount = len(filter_by_status(catalog, status))
+        print("Piezas " + status + "s: " + str(amount))
+    print("Total de piezas: " + str(len(catalog)))
+    print(f"Suma total de precios: {calculate_total_price(catalog):.2f}")
+    print(f"Precio promedio: {calculate_average_price(catalog):.2f}")
+    show_numbered_pieces(catalog)
+
+
 #-------------------
 
 def main():
@@ -243,4 +255,5 @@ def main():
     run_price_filter(catalog)
     run_logical_rules(catalog)
     run_string_exercises(catalog)
+    show_metrics(catalog)
 main()
