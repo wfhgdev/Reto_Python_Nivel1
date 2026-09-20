@@ -42,12 +42,12 @@ def capture_catalog(pieces_amount):
 
 def ask_for_piece(catalog):
     piece = {
-        "id": ask_id("  Identificador: ", catalog),
-        "name": ask_text("  Nombre: ", "El nombre"),
-        "category": ask_text("  Categoría: ", "La categoría"),
-        "price": ask_price("  Precio: "),
-        "status": ask_status("  Estado (disponible/reservada/vendida): "),
-        "description": ask_description("  Descripción ('usada' o 'certificada'): "),
+        "id": ask_id("Identificador: ", catalog),
+        "name": ask_text("Nombre: ", "El nombre"),
+        "category": ask_text("Categoría: ", "La categoría"),
+        "price": ask_price("Precio: "),
+        "status": ask_status("Estado (disponible/reservada/vendida): "),
+        "description": ask_description("Descripción ('usada' o 'certificada'): "),
     }
     return piece
 
