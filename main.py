@@ -1,3 +1,4 @@
+#variables
 SYSTEM_NAME = "La Tienda de William"
 PIECES_TO_REGISTER = 1
 STATUS_AVAILABLE = "disponible"
@@ -242,6 +243,34 @@ def show_metrics(catalog):
     print(f"Precio promedio: {calculate_average_price(catalog):.2f}")
     show_numbered_pieces(catalog)
 
+# menu
+
+def run_menu(catalog):
+    option = ""
+    while option != "4":
+        show_menu()
+        option = input("Elige una opción: ").strip()
+        if option == "1":
+            print_section_title("Todas las piezas")
+            show_pieces(catalog, "El catálogo está vacío.")
+        elif option == "2":
+            print_section_title("Piezas disponibles")
+            available = filter_by_status(catalog, STATUS_AVAILABLE)
+            show_pieces(available, "No hay piezas disponibles.")
+        elif option == "3":
+            print_section_title("Precio promedio")
+            print(f"Precio promedio: {calculate_average_price(catalog):.2f}")
+        elif option == "4":
+            print("\nGracias por usar " + SYSTEM_NAME + ". ¡Hasta pronto!")
+        else:
+            print("  Error: opción no válida. Elige un número del 1 al 4.")
+
+def show_menu():
+    print("\n===== MENÚ =====")
+    print("1. Mostrar todas las piezas")
+    print("2. Mostrar solo las piezas disponibles")
+    print("3. Mostrar el precio promedio")
+    print("4. Salir")
 
 #-------------------
 
@@ -256,4 +285,5 @@ def main():
     run_logical_rules(catalog)
     run_string_exercises(catalog)
     show_metrics(catalog)
+    run_menu(catalog)
 main()
