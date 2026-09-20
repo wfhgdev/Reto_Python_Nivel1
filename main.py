@@ -1,14 +1,3 @@
-## Parte 2. Captura de piezas por terminal
-
-# El programa debe solicitar por terminal la información de **10 piezas coleccionables**.
-# Cada pieza debe solicitar los siguientes datos:
-# * Identificador.
-# * Nombre.
-# * Categoría.
-# * Precio.
-# * Estado.
-# * Descripción.
-
 ## Parte 3. Almacenamiento de la información
 
 # Al finalizar la captura:
@@ -39,7 +28,7 @@ def show_welcome():
     print("Ha ingresado al catálogo de piezas coleccionables.")
 
 
-# punto 1. 1 Pedir datos
+# 2. Pedir datos
 
 def capture_catalog(pieces_amount):
     catalog = []
@@ -121,8 +110,16 @@ def ask_description(prompt):
             return description
         print("  Error: la descripción debe contener 'usada' o 'certificada'.")
 
+def get_categories(catalog):
+    categories = set()
+    for piece in catalog:
+        categories.add(piece["category"])
+    return categories
 
+
+#-------------------
 def main():
     show_welcome()
     catalog = capture_catalog(PIECES_TO_REGISTER)
+    categories = get_categories(catalog)
 main()
