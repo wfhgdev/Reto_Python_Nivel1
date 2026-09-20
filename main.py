@@ -177,7 +177,33 @@ def filter_by_minimum_price(catalog, minimum_price):
             result.append(piece)
     return result
 
+def filter_not_sold(catalog):
+    # Piezas cuyo estado es DISTINTO (!=) de "vendida".
+    result = []
+    for piece in catalog:
+        if piece["status"] != STATUS_SOLD:
+            result.append(piece)
+    return result
 
+#reglas logicas
+
+def run_logical_rules(catalog):
+    print_section_title("Reglas de negocio")
+    for piece in catalog:
+        print(piece["name"] + ": ¿publicable? " + yes_or_no(can_be_published(piece)) + " | ¿requiere revisión? " + yes_or_no(requires_review(piece)))
+    print("\nPiezas no vendidas:")
+    show_pieces(filter_not_sold(catalog), "Todas las piezas están vendidas.")
+
+def yes_or_no(condition):
+    if condition:
+        return "Sí"
+    return "No"
+
+def can_be_published(piece):
+    return piece["price"] > 0 and piece["status"] == STATUS_AVAILABLE
+
+def requires_review(piece):
+    return piece["status"] == STATUS_RESERVED or piece["status"] == STATUS_SOLD
 
 #-------------------
 def main():
@@ -188,4 +214,5 @@ def main():
     show_data_types(catalog, categories)
     run_status_filters(catalog)
     run_price_filter(catalog)
+    run_logical_rules(catalog)
 main()
