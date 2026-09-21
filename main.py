@@ -1,6 +1,6 @@
 #variables
 SYSTEM_NAME = "La Tienda de William"
-PIECES_TO_REGISTER = 1
+PIECES_TO_REGISTER = 10
 STATUS_AVAILABLE = "disponible"
 STATUS_RESERVED = "reservada"
 STATUS_SOLD = "vendida"
