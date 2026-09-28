@@ -52,3 +52,64 @@ def remove_piece(catalog, piece_id):
         return True
     except (ValueError, TypeError):
         return False
+
+def get_catalog_summary(catalog):
+    validations.validate_catalog(catalog)
+    summary = {}
+    for piece in catalog:
+        category = piece["category"]
+        if category in summary:
+            summary[category] += 1
+        else:
+            summary[category] = 1
+    return summary
+
+
+def get_categories(catalog):
+    validations.validate_catalog(catalog)
+    categories = set()
+    for piece in catalog:
+        categories.add(piece["category"])
+    return categories
+
+
+def get_pieces_by_category(catalog, category):
+    validations.validate_catalog(catalog)
+    wanted_category = str(category).strip().lower()
+    names = []
+    for piece in catalog:
+        if piece["category"].lower() == wanted_category:
+            names.append(piece["name"])
+    return names
+
+
+def get_average_price(catalog):
+    try:
+        validations.validate_catalog(catalog)
+        if len(catalog) == 0:
+            raise ValueError("El catálogo está vacío: no se puede calcular el promedio.")
+        total = 0
+        for piece in catalog:
+            total += piece["price"]
+        return total / len(catalog)
+    except (ValueError, TypeError):
+        return 0
+
+def filter_by_status(catalog, status):
+    validations.validate_catalog(catalog)
+    clean_status = validations.validate_status(status)
+    result = []
+    for piece in catalog:
+        if piece["status"] == clean_status:
+            result.append(piece)
+    return result
+
+
+def filter_by_min_price(catalog, min_price):
+    validations.validate_catalog(catalog)
+    minimum = validations.validate_number(min_price, "precio mínimo")
+    result = []
+    for piece in catalog:
+        if piece["price"] > minimum:
+            result.append(piece)
+    return result
